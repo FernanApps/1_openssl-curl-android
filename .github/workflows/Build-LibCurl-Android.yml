@@ -1,4 +1,4 @@
-name: Test
+name: Build-LibCurl-Android
 
 on:
   push:
@@ -62,18 +62,15 @@ jobs:
         run: |
           tree        
            
-      #- name: Upload a Build Artifact  
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: ndk-openssl-curl-lib
-      #    path: |
-      #      ./android-lib-curl/**/include/
-      #      ./android-lib-curl/**/lib/
-      #      ./android-lib-openssl/**/include/
-      #      ./android-lib-openssl/**/lib/
-            
-      #- name: Download a single artifact
-      #  uses: actions/download-artifact@v3
-      #  with:
-      #    name: ndk-openssl-curl-lib      
+      - name: Upload a Build Artifact  
+        uses: actions/upload-artifact@v2
+        with:
+          name: ndk-openssl-curl-lib
+          path: |
+            ./build
+           
+      - name: Download a single artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ndk-openssl-curl-lib      
            
