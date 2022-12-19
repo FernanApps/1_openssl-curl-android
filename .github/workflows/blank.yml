@@ -1,0 +1,79 @@
+name: Test
+
+on:
+  push:
+    branches: [ master]
+env:
+  ## Sets environment variable
+  # https://github.com/android/ndk/wiki/Unsupported-Downloads
+  NDK_VERSION : r23c
+  
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # 克隆代码 以及 子模块
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1.2.0
+        id: setup-ndk
+        with:
+          # Exact version to use
+          ndk-version: ${{ env.NDK_VERSION }}
+          # Add installation directory to path
+          add-to-path: false
+          local-cache: false
+
+      # 执行shell
+      - name: Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install autoconf
+          sudo apt-get autoremove automake
+          sudo apt-get install automake
+          sudo apt-get update
+          sudo apt-get install libtool
+          
+      - name: ndk bulid    
+        working-directory: .
+        run: |
+          pwd  
+          echo ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
+          
+          # HOST_TAG -> https://developer.android.com/ndk/guides/other_build_systems#overview
+          # macOS               = darwin-x86_64
+          # Linux               = linux-x86_64
+          # Windows de 64 bits	= windows-x86_64  
+          export NDK=$ANDROID_NDK_ROOT
+          export HOST_TAG=linux-x86_64
+          export MIN_SDK_VERSION=23
+          chmod +x ./build.sh
+          ./build.sh
+          ls -lah
+      - name: Checking Files
+        run: |
+          tree        
+           
+      #- name: Upload a Build Artifact  
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: ndk-openssl-curl-lib
+      #    path: |
+      #      ./android-lib-curl/**/include/
+      #      ./android-lib-curl/**/lib/
+      #      ./android-lib-openssl/**/include/
+      #      ./android-lib-openssl/**/lib/
+            
+      #- name: Download a single artifact
+      #  uses: actions/download-artifact@v3
+      #  with:
+      #    name: ndk-openssl-curl-lib      
+           
