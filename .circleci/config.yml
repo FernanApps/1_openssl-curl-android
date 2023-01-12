@@ -20,6 +20,11 @@ jobs:
             echo "Hello, World!"
             ls -lah
             java -version
+            sudo apt-get update
+            sudo apt-get install -y autoconf
+            sudo apt-get autoremove automake
+            sudo apt-get install -y automake
+            sudo apt-get install -y libtool
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
