@@ -17,7 +17,7 @@ jobs:
       - run:
           name: "Say hello"
           command: | 
-            "echo Hello, World!"
+            echo "Hello, World!"
             ls -lah
             java -version
 
