@@ -1,5 +1,5 @@
 # openssl-curl-android
-# .
+# 
 Compile openssl and curl for Android
 
 ## Prerequisites
